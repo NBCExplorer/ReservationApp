@@ -1,0 +1,86 @@
+<WelcomeScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        spacing: 10
+        padding: 20
+        Label:
+            text: "Welcome to AirBnB Guest App"
+            font_size: 32
+        Button:
+            text: "Login"
+            size_hint_y: None
+            height: 50
+            on_release: app.root.current = "login"
+        Button:
+            text: "Register"
+            size_hint_y: None
+            height: 50
+            on_release: app.root.current = "register"
+
+<LoginScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        spacing: 10
+        padding: 20
+        Label:
+            text: "Guest Login"
+            font_size: 32
+        TextInput:
+            id: email_input
+            hint_text: "Email"
+            multiline: False
+        TextInput:
+            id: password_input
+            hint_text: "Password"
+            password: True
+            multiline: False
+        Button:
+            text: "Login"
+            on_release: root.login_guest()
+        Button:
+            text: "Back"
+            on_release: app.root.current = "welcome"
+
+<RegisterScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        spacing: 10
+        padding: 20
+        Label:
+            text: "Guest Registration"
+            font_size: 32
+        TextInput:
+            id: reg_email_input
+            hint_text: "Email"
+            multiline: False
+        TextInput:
+            id: reg_password_input
+            hint_text: "Password"
+            password: True
+            multiline: False
+        TextInput:
+            id: reg_fullname_input
+            hint_text: "First Name"
+            multiline: False
+        TextInput:
+            id: reg_fullname_input
+            hint_text: "Last Name"
+            multiline: False
+        Button:
+            text: "Register"
+            on_release: root.register_guest()
+        Button:
+            text: "Back"
+            on_release: app.root.current = "welcome"
+
+<GuestHomeScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        spacing: 10
+        padding: 20
+        Label:
+            text: "Welcome Guest!"
+            font_size: 32
+        Button:
+            text: "Logout"
+            on_release: root.logout_guest()
