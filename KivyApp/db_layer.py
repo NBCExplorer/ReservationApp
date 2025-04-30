@@ -1,57 +1,54 @@
-import requests
+from kivy.app import App
+from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.lang import Builder
 
-BASE_URL = "http://localhost:5173/api"
+# Loads KV layout
+Builder.load_file('ui.kv')
 
-# ---------- AUTHENTICATION ----------
+# Welcome Screen
+class WelcomeScreen(Screen):
+    pass
 
-def register_guest(name, email, password):
-    response = requests.post(f"{BASE_URL}/guests/register", json={
-        "name": name,
-        "email": email,
-        "password": password
-    })
-    return response.json()
+# Login Screen (without DB)
+class LoginScreen(Screen):
+    def login_guest(self):
+        # Simple email and password check (hardcoded)
+        email = self.ids.email_input.text
+        password = self.ids.password_input.text
+        
+        if email == "guest@example.com" and password == "password123":
+            self.manager.current = "guest_home"
+        else:
+            self.ids.login_status.text = "Login failed. Try again."
 
-def login_guest(email, password):
-    response = requests.post(f"{BASE_URL}/guests/login", json={
-        "email": email,
-        "password": password
-    })
-    return response.json()
+# Register Screen (without DB)
+class RegisterScreen(Screen):
+    def register_guest(self):
+        first_name = self.ids.reg_firstname_input.text
+        last_name = self.ids.reg_lastname_input.text
+        full_name = f"{first_name} {last_name}"
+        email = self.ids.reg_email_input.text
+        password = self.ids.reg_password_input.text
+        
+        if email and password:  # Basic check if fields are filled
+            self.manager.current = "login"
+        else:
+            self.ids.register_status.text = "Please fill in all fields."
 
-def logout_guest(token):
-    # Optional if using token-based sessions
-    headers = {"Authorization": f"Bearer {token}"}
-    response = requests.post(f"{BASE_URL}/guests/logout", headers=headers)
-    return response.json()
+# Guest Home Screen
+class GuestHomeScreen(Screen):
+    def logout_guest(self):
+        self.manager.current = "welcome"
 
-# ---------- LISTING SEARCH ----------
+# Main App Class
+class GuestApp(App):
+    def build(self):
+        sm = ScreenManager()
+        sm.add_widget(WelcomeScreen(name='welcome'))
+        sm.add_widget(LoginScreen(name='login'))
+        sm.add_widget(RegisterScreen(name='register'))
+        sm.add_widget(GuestHomeScreen(name='guest_home'))
+        return sm
 
-def search_listings(criteria):
-    response = requests.get(f"{BASE_URL}/listings/search", params=criteria)
-    return response.json()
-
-def get_listing_details(listing_id):
-    response = requests.get(f"{BASE_URL}/listings/{listing_id}")
-    return response.json()
-
-# ---------- RESERVATIONS ----------
-
-def make_reservation(token, listing_id, start_date, end_date):
-    headers = {"Authorization": f"Bearer {token}"}
-    response = requests.post(f"{BASE_URL}/reservations", json={
-        "listingId": listing_id,
-        "startDate": start_date,
-        "endDate": end_date
-    }, headers=headers)
-    return response.json()
-
-def get_guest_reservations(token):
-    headers = {"Authorization": f"Bearer {token}"}
-    response = requests.get(f"{BASE_URL}/reservations/guest", headers=headers)
-    return response.json()
-
-def cancel_reservation(token, reservation_id):
-    headers = {"Authorization": f"Bearer {token}"}
-    response = requests.patch(f"{BASE_URL}/reservations/{reservation_id}/cancel", headers=headers)
-    return response.json()
+if __name__ == "__main__":
+    GuestApp().run()

@@ -1,29 +1,55 @@
+import re
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.lang import Builder
 
-# Define the Screens
+# Loads KV layout
+Builder.load_file('ui.kv')
+
+# Welcome Screen
 class WelcomeScreen(Screen):
     pass
 
+# Login Screen
 class LoginScreen(Screen):
     def login_guest(self):
-        # For now, just navigate to guest home
-        self.manager.current = "guest_home"
+        email = self.ids.email_input.text
+        password = self.ids.password_input.text
+        
+        if email == "guest@example.com" and password == "password123":
+            self.manager.current = "guest_home"
+        else:
+            self.ids.login_status.text = "Login failed. Try again."
 
+    def on_pre_leave(self):
+        self.ids.login_status.text = ""
+
+# Register Screen
 class RegisterScreen(Screen):
     def register_guest(self):
-        # For now, just navigate back to login after "registration"
-        self.manager.current = "login"
+        first_name = self.ids.reg_firstname_input.text
+        last_name = self.ids.reg_lastname_input.text
+        email = self.ids.reg_email_input.text
+        password = self.ids.reg_password_input.text
 
+        if not first_name or not last_name or not email or not password:
+            self.ids.register_status.text = "Please fill in all fields."
+        elif not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+            self.ids.register_status.text = "Enter a valid email address."
+        else:
+            self.manager.current = "login"
+
+    def on_pre_leave(self):
+        self.ids.register_status.text = ""
+
+# Guest Home Screen
 class GuestHomeScreen(Screen):
     def logout_guest(self):
         self.manager.current = "welcome"
 
+# Main App
 class GuestApp(App):
     def build(self):
-        # Load the separate KV file automatically
-        Builder.load_file('ui.kv')
         sm = ScreenManager()
         sm.add_widget(WelcomeScreen(name='welcome'))
         sm.add_widget(LoginScreen(name='login'))

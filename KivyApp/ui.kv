@@ -37,6 +37,10 @@
         Button:
             text: "Login"
             on_release: root.login_guest()
+        Label:
+            id: login_status
+            text: ""
+            color: (1, 0, 0, 1)
         Button:
             text: "Back"
             on_release: app.root.current = "welcome"
@@ -50,6 +54,14 @@
             text: "Guest Registration"
             font_size: 32
         TextInput:
+            id: reg_firstname_input
+            hint_text: "First Name"
+            multiline: False
+        TextInput:
+            id: reg_lastname_input
+            hint_text: "Last Name"
+            multiline: False
+        TextInput:
             id: reg_email_input
             hint_text: "Email"
             multiline: False
@@ -58,14 +70,10 @@
             hint_text: "Password"
             password: True
             multiline: False
-        TextInput:
-            id: reg_fullname_input
-            hint_text: "First Name"
-            multiline: False
-        TextInput:
-            id: reg_fullname_input
-            hint_text: "Last Name"
-            multiline: False
+        Label:
+            id: register_status
+            text: ""
+            color: (1, 0, 0, 1)
         Button:
             text: "Register"
             on_release: root.register_guest()
@@ -83,4 +91,6 @@
             font_size: 32
         Button:
             text: "Logout"
+            size_hint_y: None
+            height: 50
             on_release: root.logout_guest()
