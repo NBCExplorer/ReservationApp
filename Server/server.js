@@ -9,6 +9,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Routes
+const authRoutes = require('./routes/auth');
+app.use('/api/auth', authRoutes);
+
 // Basic route to confirm the server is working
 app.get('/', (req, res) => {
   res.send('Server is running!');
