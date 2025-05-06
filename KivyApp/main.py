@@ -28,14 +28,20 @@ class RegisterScreen(Screen):
         last = self.ids.reg_lastname_input.text
         email = self.ids.reg_email_input.text
         password = self.ids.reg_password_input.text
+        confirm_password = self.ids.reg_confirm_password_input.text
 
-        if first and last and email and password:
-            if db.register_guest(first, last, email, password):
-                self.manager.current = "login"
-            else:
-                self.ids.register_status.text = "Email already exists."
-        else:
+        if not (first and last and email and password and confirm_password):
             self.ids.register_status.text = "Please fill in all fields."
+            return
+
+        if password != confirm_password:
+            self.ids.register_status.text = "Passwords do not match."
+            return
+
+        if db.register_guest(first, last, email, password):
+            self.manager.current = "login"
+        else:
+            self.ids.register_status.text = "Email already exists."
 
     def on_pre_leave(self):  # Clear status when leaving
         self.ids.register_status.text = ""
