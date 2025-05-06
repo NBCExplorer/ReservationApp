@@ -1,54 +1,28 @@
-from kivy.app import App
-from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.lang import Builder
+import bcrypt
+from pymongo import MongoClient
 
-# Loads KV layout
-Builder.load_file('ui.kv')
+class Database:
+    def __init__(self):
+        uri = "mongodb+srv://Alexis:gMggzxyJ50RwhRb5@reservationcluster.wq3eeod.mongodb.net/?retryWrites=true&w=majority&appName=ReservationCluster"
+        self.client = MongoClient(uri)
+        self.db = self.client["airbnb"]
+        self.guests = self.db["guests"]
 
-# Welcome Screen
-class WelcomeScreen(Screen):
-    pass
+    def validate_guest_login(self, email, password):
+        user = self.guests.find_one({"email": email})
+        if user and bcrypt.checkpw(password.encode(), user["password"]):
+            return True
+        return False
 
-# Login Screen (without DB)
-class LoginScreen(Screen):
-    def login_guest(self):
-        # Simple email and password check (hardcoded)
-        email = self.ids.email_input.text
-        password = self.ids.password_input.text
-        
-        if email == "guest@example.com" and password == "password123":
-            self.manager.current = "guest_home"
-        else:
-            self.ids.login_status.text = "Login failed. Try again."
+    def register_guest(self, first_name, last_name, email, password):
+        if self.guests.find_one({"email": email}):
+            return False  # Email already exists
 
-# Register Screen (without DB)
-class RegisterScreen(Screen):
-    def register_guest(self):
-        first_name = self.ids.reg_firstname_input.text
-        last_name = self.ids.reg_lastname_input.text
-        full_name = f"{first_name} {last_name}"
-        email = self.ids.reg_email_input.text
-        password = self.ids.reg_password_input.text
-        
-        if email and password:  # Basic check if fields are filled
-            self.manager.current = "login"
-        else:
-            self.ids.register_status.text = "Please fill in all fields."
-
-# Guest Home Screen
-class GuestHomeScreen(Screen):
-    def logout_guest(self):
-        self.manager.current = "welcome"
-
-# Main App Class
-class GuestApp(App):
-    def build(self):
-        sm = ScreenManager()
-        sm.add_widget(WelcomeScreen(name='welcome'))
-        sm.add_widget(LoginScreen(name='login'))
-        sm.add_widget(RegisterScreen(name='register'))
-        sm.add_widget(GuestHomeScreen(name='guest_home'))
-        return sm
-
-if __name__ == "__main__":
-    GuestApp().run()
+        hashed_pw = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
+        self.guests.insert_one({
+            "first_name": first_name,
+            "last_name": last_name,
+            "email": email,
+            "password": hashed_pw
+        })
+        return True
