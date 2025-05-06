@@ -36,6 +36,11 @@ h1 {
   color: #333;
 }
 
+/* Form layout */
+form {
+  width: 100%;
+}
+
 /* Form Elements */
 input[type="text"],
 input[type="email"],
@@ -69,11 +74,17 @@ button:focus {
   outline: none;
 }
 
-/* Optional: Style for Register button */
+/* Optional: Style for secondary buttons */
 button.secondary {
   background-color: #007bff;
 }
 
 button.secondary:hover {
   background-color: #0056b3;
+}
+
+/* Error Message */
+.error-message {
+  color: red;
+  margin-top: 10px;
 }

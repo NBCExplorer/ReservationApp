@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { loginHost } from "../services/auth";
 
 function Login({ onLogin }) {
   const navigate = useNavigate();
@@ -7,16 +8,16 @@ function Login({ onLogin }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Hardcoded check
-    if (email === "host@example.com" && password === "admin123") {
+    try {
+      await loginHost(email, password);
       setError("");
       onLogin();
       navigate("/");
-    } else {
-      setError("Login failed. Try again.");
+    } catch (err) {
+      setError(err.message);
     }
   };
 
@@ -41,10 +42,14 @@ function Login({ onLogin }) {
         <button type="submit">Sign In</button>
       </form>
       {error && <p style={{ color: "red" }}>{error}</p>}
-      <button onClick={() => {
-        setError(""); // Clear message on navigation
-        navigate("/register");
-      }}>Register</button>
+      <button
+        onClick={() => {
+          setError("");
+          navigate("/register");
+        }}
+      >
+        Register
+      </button>
     </div>
   );
 }
