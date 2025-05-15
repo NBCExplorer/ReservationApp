@@ -26,7 +26,7 @@ router.post('/register', async (req, res) => {
       if (existingHostId) {
         return res.status(400).json({ message: 'Host ID already in use' });
       }
-
+      
       // ✅ Check if hostId exists in listings collection (as host.host_id)
       try {
         const db = mongoose.connection.db;
@@ -63,7 +63,6 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// Login route remains unchanged
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 

@@ -1,33 +1,14 @@
 const mongoose = require('mongoose');
 
-const reservationSchema = new mongoose.Schema({
-  listing: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Listing',
-    required: true
-  },
-  guest: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
-  },
-  status: {
-    type: String,
-    enum: ['pending', 'confirmed', 'completed', 'cancelled'],
-    default: 'pending'
-  },
-  checkIn: {
-    type: Date,
-    required: true
-  },
-  checkOut: {
-    type: Date,
-    required: true
-  },
-  totalPrice: {
-    type: Number,
-    required: true
-  }
-}, { timestamps: true });
+const ReservationSchema = new mongoose.Schema({
+  guest_email: { type: String, required: true },
+  listing_id: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Listing' },
+  listing_name: { type: String, required: true },  
+  guest_count: { type: Number, required: true },
+  arrival_date: { type: String, required: true },
+  leaving_date: { type: String, required: true },
+  total_cost: { type: Number, required: true },    
+  status: { type: String, default: 'pending' }
+}, { collection: 'reservations' });
 
-module.exports = mongoose.model('Reservation', reservationSchema);
+module.exports = mongoose.model('Reservation', ReservationSchema);

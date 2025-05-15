@@ -1,13 +1,14 @@
 const mongoose = require('mongoose');
 
 const listingSchema = new mongoose.Schema({
+  _id: String, 
   title: {
     type: String,
     required: true
   },
   description: String,
   location: String,
-  pricePerNight: {
+  price: {
     type: Number,
     required: true
   },
@@ -16,7 +17,7 @@ const listingSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
-  images: [String], // Array of image URLs
+  images: [String],
   amenities: [String],
   availability: {
     type: Boolean,
