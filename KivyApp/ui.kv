@@ -8,13 +8,9 @@
             font_size: 32
         Button:
             text: "Login"
-            size_hint_y: None
-            height: 50
             on_release: app.root.current = "login"
         Button:
             text: "Register"
-            size_hint_y: None
-            height: 50
             on_release: app.root.current = "register"
 
 <LoginScreen>:
@@ -50,62 +46,152 @@
         orientation: "vertical"
         spacing: 10
         padding: 20
-
         Label:
             text: "Guest Registration"
             font_size: 32
-
         TextInput:
             id: reg_firstname_input
             hint_text: "First Name"
             multiline: False
-
         TextInput:
             id: reg_lastname_input
             hint_text: "Last Name"
             multiline: False
-
         TextInput:
             id: reg_email_input
             hint_text: "Email"
             multiline: False
-
         TextInput:
             id: reg_password_input
             hint_text: "Password"
             password: True
             multiline: False
-
         TextInput:
             id: reg_confirm_password_input
             hint_text: "Confirm Password"
             password: True
             multiline: False
-
         Label:
             id: register_status
             text: ""
             color: (1, 0, 0, 1)
-
         Button:
             text: "Register"
             on_release: root.register_guest()
-
         Button:
             text: "Back"
             on_release: app.root.current = "welcome"
 
+<Button>:
+    size_hint_y: None
+    height: "40dp"
 
-<GuestHomeScreen>:
+<DashboardScreen>:
+    name: "dashboard"
     BoxLayout:
         orientation: "vertical"
-        spacing: 10
         padding: 20
+        spacing: 10
+
+        TextInput:
+            id: host_id_input
+            hint_text: "Enter Listing ID or Host ID"
+            size_hint_y: None
+            height: "40dp"
+
+        Button:
+            text: "Search"
+            on_release: root.search_listing()
+
         Label:
-            text: "Welcome Guest!"
-            font_size: 32
+            id: dashboard_status
+            text: ""
+            size_hint_y: None
+            height: "150dp"
+            text_size: self.width, None
+            halign: "left"
+            valign: "top"
+
+        Button:
+            id: availability_button
+            text: "Check Availability"
+            on_release: root.go_to_reservation()
+            opacity: 0
+            disabled: True
+
+        Button:
+            text: "My Reservations"
+            on_release: root.go_to_my_reservations()
+
         Button:
             text: "Logout"
+            on_release: app.root.current = "welcome"
+
+<ReservationScreen>:
+    name: "reservation"
+    BoxLayout:
+        orientation: "vertical"
+        padding: 20
+        spacing: 10
+
+        Label:
+            text: "Make a Reservation"
+            font_size: "24sp"
+
+        TextInput:
+            id: guest_count_input
+            hint_text: "Number of Guests (e.g. 2)"
+            input_filter: "int"
+            multiline: False
+
+        TextInput:
+            id: arrival_date_input
+            hint_text: "Arrival Date (yyyy/mm/dd)"
+            multiline: False
+
+        TextInput:
+            id: leaving_date_input
+            hint_text: "Leaving Date (yyyy/mm/dd)"
+            multiline: False
+
+        Button:
+            text: "Confirm Reservation"
+            on_release: root.confirm_reservation()
+
+        Label:
+            id: reservation_status
+            text: ""
+            color: 0, 1, 0, 1  # Green text
+
+        Button:
+            text: "Back to Dashboard"
+            on_release: app.root.current = "dashboard"
+
+<MyReservationsScreen>:
+    name: "my_reservations"
+    BoxLayout:
+        orientation: "vertical"
+        padding: 20
+        spacing: 10
+
+        Label:
+            text: "My Reservations"
+            font_size: "24sp"
             size_hint_y: None
-            height: 50
-            on_release: root.logout_guest()
+            height: 40
+
+        ScrollView:
+            GridLayout:
+                id: reservations_container  # Updated ID to match your Python code
+                cols: 1
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: 10
+
+        Button:
+            text: "Back to Dashboard"
+            size_hint_y: None
+            height: 40
+            on_release:
+                app.root.current = "dashboard"
+
