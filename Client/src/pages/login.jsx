@@ -22,7 +22,7 @@ function Login({ onLogin }) {
   };
 
   return (
-    <div>
+    <div className="container">
       <h1>Host Login</h1>
       <form onSubmit={handleSubmit}>
         <input
@@ -41,8 +41,9 @@ function Login({ onLogin }) {
         />
         <button type="submit">Sign In</button>
       </form>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <p className="error-message">{error}</p>}
       <button
+        className="secondary"
         onClick={() => {
           setError("");
           navigate("/register");

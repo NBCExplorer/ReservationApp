@@ -74,7 +74,6 @@ button:focus {
   outline: none;
 }
 
-/* Optional: Style for secondary buttons */
 button.secondary {
   background-color: #007bff;
 }
@@ -87,4 +86,64 @@ button.secondary:hover {
 .error-message {
   color: red;
   margin-top: 10px;
+}
+
+.stat-container p {
+  margin: 12px 0;
+  font-size: 16px;
+}
+
+/* Pending status with orange background */
+.status.pending {
+  flex: 1;
+  background-color: #ffaa00;
+  color: rgb(0, 0, 0);
+  border: none;
+  padding: 10px 0;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: background-color 0.3s ease;
+  display: inline-block;
+}
+
+/* Button row */
+.button-row {
+  display: flex;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+/* Confirm button (green) */
+.confirm-btn {
+  flex: 1;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 0;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: background-color 0.3s ease;
+}
+
+.confirm-btn:hover {
+  background-color: #45a049;
+}
+
+/* Refuse button (red) */
+.refuse-btn {
+  flex: 1;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 10px 0;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: background-color 0.3s ease;
+}
+
+.refuse-btn:hover {
+  background-color: #da190b;
 }

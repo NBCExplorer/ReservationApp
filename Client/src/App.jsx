@@ -1,14 +1,12 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/login";
 import Register from "./pages/register";
-import Home from "./pages/Home";
+import Home from "./pages/home";
 import { useState } from "react";
 
 function App() {
-  // Manage authentication state (simple for now)
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // Fake login and logout handlers (replace with real server logic later)
   const handleLogin = () => {
     setIsAuthenticated(true);
   };

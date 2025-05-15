@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000/api/auth"; // Update if using different port or proxy
+const API_URL = "http://localhost:3000/api/auth"; 
 
 export async function registerHost(name, email, password) {
   const res = await fetch(`${API_URL}/register`, {
